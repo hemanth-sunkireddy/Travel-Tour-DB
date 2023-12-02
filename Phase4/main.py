@@ -443,6 +443,7 @@ while(1):
 
         with con.cursor() as cur:
             while(1):
+                input("Press any key to continue: ")
                 print()
                 print()
                 print()
