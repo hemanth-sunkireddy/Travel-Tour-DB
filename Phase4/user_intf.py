@@ -42,7 +42,13 @@ def option6():
     return
 
 def option7():
-    print("Option 7")
+    initial_characters=input("Enter initial characters for matching first name: ")
+    query=f"select * from Tourists where First_Name LIKE '{initial_characters}%"
+    return
+
+def option8():
+    initial_characters=input("Enter initial characters for matching first name: ")
+    query=f"select * from Tour_Guide where First_Name LIKE '{initial_characters}%"
     return
 
 def option8():   
@@ -218,8 +224,8 @@ while(1):
                 print("6. Total payment due for a month of year") 
 
                 # search
-                print("7. View all the tour guides having their ids starting with some number")
-                print("8. View all the tourists having their ids starting with some number")
+                print("7. Search all tourits with their name starting with some characters")
+                print("8. Search all tour guides with their name starting with some characters")
 
                 #analysis
 
