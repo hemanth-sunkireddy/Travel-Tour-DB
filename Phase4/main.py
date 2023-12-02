@@ -3,6 +3,24 @@ import pymysql
 import pymysql.cursors
 
 
+def option1(cur,con):
+    dest = input("enter the destination for package: ")
+    # query= "select * from Tour_Packages where  Destination = '%s'" % (dest) 
+    query="select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination = '%s' " % (dest) 
+    try:
+        
+        cur.execute(query)
+        # Commit the changes to the database
+        con.commit()
+        result = cur.fetchall()
+        # Print the results
+        for row in result:
+            print(row)
+        print("Commit successful!")
+    except Exception as e:
+        con.rollback()  # Rollback changes in case of error
+        print(f"Commit failed with the following error: {e}")
+
 def option2():
     
     lang = input("enter the language of tour guide: ")
@@ -146,23 +164,7 @@ def option10():
 
 
 
-def option1(cur,con):
-    dest = input("enter the destination for package: ")
-    # query= "select * from Tour_Packages where  Destination = '%s'" % (dest) 
-    query="select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination = '%s' " % (dest) 
-    try:
-        
-        cur.execute(query)
-        # Commit the changes to the database
-        con.commit()
-        result = cur.fetchall()
-        # Print the results
-        for row in result:
-            print(row)
-        print("Commit successful!")
-    except Exception as e:
-        con.rollback()  # Rollback changes in case of error
-        print(f"Commit failed with the following error: {e}")
+
 
 
 # Add a new tour guide
