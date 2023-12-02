@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS Tour_Guide
   First_Name VARCHAR(15) NOT NULL,
   Second_Name VARCHAR(15) NOT NULL,
   Identity_Type VARCHAR(30) NOT NULL,
+  Identity_Number VARCHAR(15) NOT NULL,
   Gender CHAR(1) NOT NULL,
   Contact_Number INT NOT NULL,
   Rating FLOAT NOT NULL,
@@ -24,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Travel_Agents
   First_Name VARCHAR(15) NOT NULL,
   Second_Name VARCHAR(15) NOT NULL,
   Identity_Type VARCHAR(30) NOT NULL,
-  Identity_Number INT NOT NULL,
+  Identity_Number VARCHAR(15) NOT NULL,
   Contact_Number INT NOT NULL,
   PRIMARY KEY (Agent_ID)
 );
@@ -237,11 +238,11 @@ CREATE TABLE IF NOT EXISTS Tourists
   First_Name VARCHAR(15) NOT NULL,
   Second_Name VARCHAR(15) NOT NULL,
   Identity_Type VARCHAR(30) NOT NULL,
+  Identity_Number VARCHAR(15) NOT NULL,
   House_Number INT NOT NULL,
   Postal_Code INT NOT NULL,
   Street_Address VARCHAR(50) NOT NULL,
   Contact_Number INT NOT NULL,
-  Identity_Number INT NOT NULL,
   Agent_ID INT NOT NULL,
   PRIMARY KEY (Tourist_ID),
   FOREIGN KEY (Agent_ID) REFERENCES Travel_Agents(Agent_ID)
