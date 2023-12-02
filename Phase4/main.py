@@ -1,21 +1,30 @@
 import subprocess as sp
 import pymysql
 import pymysql.cursors
-
+import prettytable
 
 def option1(cur,con):
     dest = input("enter the destination for package: ")
-    # query= "select * from Tour_Packages where  Destination = '%s'" % (dest) 
     query="select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination = '%s' " % (dest) 
     try:
         
         cur.execute(query)
-        # Commit the changes to the database
+        # Commit the changes to the databasequery="select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination = '%s' " % (dest) 
         con.commit()
         result = cur.fetchall()
-        # Print the results
+        
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  # Rollback changes in case of error
@@ -32,9 +41,20 @@ def option2():
         
         con.commit()
         result = cur.fetchall()
-        # Print the results
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+        # # Print the results
+        # for row in result:
+        #     print(row)
         print("Commit successful!")
     except Exception as e:
         con.rollback()  # Rollback changes in case of error
@@ -49,9 +69,23 @@ def option3():
         con.commit()
         result = cur.fetchall()
         # Print the results
+        # for row in result:
+        #     print(row)
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
+      
+  
     except Exception as e:
         con.rollback()  # Rollback changes in case of error
         print(f"Commit failed with the following error: {e}")
@@ -65,8 +99,21 @@ def option4():
         con.commit()
         result = cur.fetchall()
         # Print the results
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  # Rollback changes in case of error
@@ -81,8 +128,21 @@ def option5():
         query_status1 = cur.execute(query)
         con.commit()
         result = cur.fetchall()
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  
@@ -98,8 +158,21 @@ def option6():
         query_status1 = cur.execute(query)
         con.commit()
         result = cur.fetchall()
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  
@@ -113,8 +186,21 @@ def option7():
         query_status1 = cur.execute(query)
         con.commit()
         result = cur.fetchall()
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  
@@ -128,8 +214,21 @@ def option8():
         query_status1 = cur.execute(query)
         con.commit()
         result = cur.fetchall()
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  
@@ -141,8 +240,21 @@ def option9():
         query_status1 = cur.execute(query)
         con.commit()
         result = cur.fetchall()
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  
@@ -155,8 +267,21 @@ def option10():
         query_status1 = cur.execute(query)
         con.commit()
         result = cur.fetchall()
+        # for row in result:
+        #     print(row)
+        # print("Commit successful!")
+        table = prettytable.PrettyTable()
+
+        # Set the column names
+        table.field_names = result[0].keys()
+
+        # Add rows to the table
         for row in result:
-            print(row)
+            table.add_row(row.values())
+
+        # Print the table
+        print(table)
+
         print("Commit successful!")
     except Exception as e:
         con.rollback()  
@@ -318,7 +443,9 @@ while(1):
 
         with con.cursor() as cur:
             while(1):
-
+                print()
+                print()
+                print()
                 # selection
                 print("1. Available packages for a destination")  
                 print("2. Tour guide speaking a language")  
