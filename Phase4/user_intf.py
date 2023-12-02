@@ -33,8 +33,7 @@ def option7():
     print("Option 7")
 
 def option8():   
-    print("Optino 8")
-
+    print("Option 8")
 def option9():
     query="select Rating,Comments, Day, Month,Year, Package_ID from(Reviews_and_Feedback2 as A join Reviews_and_Feedback1 as B on A.Review_ID=B.Review_ID ) "
 def option10():
@@ -88,9 +87,51 @@ def option1():
         ## or "select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination == '%s' " % (dest) 
         
     except: 
-        print("Nothing if try fails it comes to except")
+        print("Nothing")
 
     return
+
+# Add a new tour guide
+def option11():
+    fname=input("Enter first name of tour guide: ")
+    sname=input("Enter second name: ")
+    identity_type=input("Enter identity type: ")
+    identity_number=input("Enter identity number: ")
+    gender=input("Enter gender (M/F): ")
+    contact_number=int(input("Enter 10-digit contact number: "))
+    serving_destination=input("Enyrt serving destination: ")
+    availability=int(input("Is the guide avaialbale (0/1): "))
+    query=f"insert into Tour_Guide(First_Name,Second_Name,Identity_Type,Identity_Number,Gender,Contact_Number,Serving_Destination,Availability_Status) values({fname},{sname},{identity_type},{identity_number},{gender},{contact_number},{serving_destination},{availability})"
+
+# Add a new customizable hotel
+def option12():
+    hname=input("Enter hotel name: ")
+    day_price=int(input("Enter one day price: "))
+    night_price=int(input("Enter one night price: "))
+    query=f"insert Customizable_Hotel(Hotel_Name,Hotel_Rating,Night_Price) values({hname},{day_price},{night_price})"
+
+# Update rating of a tour guide
+def option13():
+    guide_id=int(input("Enter guide id: "))
+    rating=int(input("Enter rating for the guide: "))
+    query=f"update Tour_Guide set Rating={rating} where Guide_ID={guide_id}"
+
+# Update price of customizable hotel
+def option14():
+    hotel_id=int(input("Enter hotel id: "))
+    day_price=int(input("Enter updated day price: "))
+    night_price=int(input("Enter updated night price: "))
+    query=f"update Customizable_Hotel set Day_Price={day_price}, Night_Price={night_price} where Hotel_ID={hotel_id}"
+
+# Remove an agent from Travel_Agents table
+def option15():
+    agent_id=int(input("Enter travel agent id: "))
+    query=f"delete from Travel_Agents where Agent_ID={agent_id}"
+
+# Remove a hotel from Customizable_Hotel table
+def option16():
+    hotel_id=int(input("Enter hotel id: "))
+    query=f"delete from Customizable_Hotel where Hotel_ID={hotel_id}"
 
 def dispatch(ch):
     """
@@ -137,7 +178,9 @@ def dispatch(ch):
 while(1):
     tmp = sp.call('clear', shell=True)
     
-    
+    # # Can be skipped if you want to hardcode username and password
+    # username = input("Username: ")
+    # password = input("Password: ")
 
     try:
         # Set db name accordingly which have been create by you
@@ -146,7 +189,7 @@ while(1):
                               port=3306,
                               user="gopi",
                               password="abcde54321#",
-                              db='TRAVEL_AGENCY',
+                              db='phase4',
                               cursorclass=pymysql.cursors.DictCursor)
         tmp = sp.call('clear', shell=True)
 
