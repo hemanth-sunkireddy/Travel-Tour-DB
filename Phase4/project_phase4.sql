@@ -49,8 +49,8 @@ DROP TABLE IF EXISTS Customizable_Places;
 CREATE TABLE IF NOT EXISTS Customizable_Places
 (
   Place_ID INT AUTO_INCREMENT NOT NULL,
-  Destination_name VARCHAR(30) NOT NULL,
-  Place_Name VARCHAR(30) NOT NULL,
+  Destination_name VARCHAR(50) NOT NULL,
+  Place_Name VARCHAR(50) NOT NULL,
   Cost INT NOT NULL,
   PRIMARY KEY (Place_ID)
 );
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS Offers1
   Offer_ID INT AUTO_INCREMENT NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Offer_ID, Package_ID),
-  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID)
+  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Customizable_Transport_Booking1;
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Customizable_Transport_Booking1
   Transport_Booking_ID INT AUTO_INCREMENT NOT NULL,
   Transport_ID INT NOT NULL,
   PRIMARY KEY (Transport_Booking_ID, Transport_ID),
-  FOREIGN KEY (Transport_ID) REFERENCES Customizable_Transport(Transport_ID)
+  FOREIGN KEY (Transport_ID) REFERENCES Customizable_Transport(Transport_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Customizable_Hotel_booking1;
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS Customizable_Hotel_booking1
   Hotel_Booking_ID INT AUTO_INCREMENT NOT NULL,
   Hotel_ID INT NOT NULL,
   PRIMARY KEY (Hotel_Booking_ID, Hotel_ID),
-  FOREIGN KEY (Hotel_ID) REFERENCES Customizable_Hotel(Hotel_ID)
+  FOREIGN KEY (Hotel_ID) REFERENCES Customizable_Hotel(Hotel_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Customized_Bookings1;
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS Customized_Bookings1
   Hotel_ID INT NOT NULL,
   Place_ID INT NOT NULL,
   PRIMARY KEY (Custom_Booking_ID, Transport_Booking_ID, Transport_ID, Hotel_Booking_ID, Hotel_ID, Place_ID),
-  FOREIGN KEY (Transport_Booking_ID, Transport_ID) REFERENCES Customizable_Transport_Booking1(Transport_Booking_ID, Transport_ID),
-  FOREIGN KEY (Hotel_Booking_ID, Hotel_ID) REFERENCES Customizable_Hotel_booking1(Hotel_Booking_ID, Hotel_ID),
-  FOREIGN KEY (Place_ID) REFERENCES Customizable_Places(Place_ID)
+  FOREIGN KEY (Transport_Booking_ID, Transport_ID) REFERENCES Customizable_Transport_Booking1(Transport_Booking_ID, Transport_ID) ON DELETE CASCADE,
+  FOREIGN KEY (Hotel_Booking_ID, Hotel_ID) REFERENCES Customizable_Hotel_booking1(Hotel_Booking_ID, Hotel_ID) ON DELETE CASCADE,
+  FOREIGN KEY (Place_ID) REFERENCES Customizable_Places(Place_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Languages_Spoken;
@@ -126,16 +126,16 @@ CREATE TABLE IF NOT EXISTS Languages_Spoken
   Languages_Spoken VARCHAR(20) NOT NULL,
   Guide_ID INT NOT NULL,
   PRIMARY KEY (Languages_Spoken, Guide_ID),
-  FOREIGN KEY (Guide_ID) REFERENCES Tour_Guide(Guide_ID)
+  FOREIGN KEY (Guide_ID) REFERENCES Tour_Guide(Guide_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Places;
 CREATE TABLE IF NOT EXISTS Places
 (
-  Places INT NOT NULL,
+  Places VARCHAR(50) NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Places, Package_ID),
-  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID)
+  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Tourists_IDs;
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS Tourists_IDs
   Hotel_ID INT NOT NULL,
   Place_ID INT NOT NULL,
   PRIMARY KEY (Tourists_IDs),
-  FOREIGN KEY (Custom_Booking_ID, Transport_Booking_ID, Transport_ID, Hotel_Booking_ID, Hotel_ID, Place_ID) REFERENCES Customized_Bookings1(Custom_Booking_ID, Transport_Booking_ID, Transport_ID, Hotel_Booking_ID, Hotel_ID, Place_ID)
+  FOREIGN KEY (Custom_Booking_ID, Transport_Booking_ID, Transport_ID, Hotel_Booking_ID, Hotel_ID, Place_ID) REFERENCES Customized_Bookings1(Custom_Booking_ID, Transport_Booking_ID, Transport_ID, Hotel_Booking_ID, Hotel_ID, Place_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Assigned_to;
@@ -158,8 +158,8 @@ CREATE TABLE IF NOT EXISTS Assigned_to
   Guide_ID INT NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Guide_ID, Package_ID),
-  FOREIGN KEY (Guide_ID) REFERENCES Tour_Guide(Guide_ID),
-  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID)
+  FOREIGN KEY (Guide_ID) REFERENCES Tour_Guide(Guide_ID) ON DELETE CASCADE,
+  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Payments2;
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS Tourists
   Contact_Number INT NOT NULL,
   Agent_ID INT NOT NULL,
   PRIMARY KEY (Tourist_ID),
-  FOREIGN KEY (Agent_ID) REFERENCES Travel_Agents(Agent_ID)
+  FOREIGN KEY (Agent_ID) REFERENCES Travel_Agents(Agent_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Reviews_and_Feedback1;
@@ -259,8 +259,8 @@ CREATE TABLE IF NOT EXISTS Reviews_and_Feedback1
   Tourist_ID INT NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Review_ID, Tourist_ID, Package_ID),
-  FOREIGN KEY (Tourist_ID) REFERENCES Tourists(Tourist_ID),
-  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID)
+  FOREIGN KEY (Tourist_ID) REFERENCES Tourists(Tourist_ID) ON DELETE CASCADE,
+  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Bookings1;
@@ -270,8 +270,8 @@ CREATE TABLE IF NOT EXISTS Bookings1
   Tourist_ID INT NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Booking_ID, Tourist_ID, Package_ID),
-  FOREIGN KEY (Tourist_ID) REFERENCES Tourists(Tourist_ID),
-  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID)
+  FOREIGN KEY (Tourist_ID) REFERENCES Tourists(Tourist_ID) ON DELETE CASCADE,
+  FOREIGN KEY (Package_ID) REFERENCES Tour_Packages(Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Payments1;
@@ -282,7 +282,7 @@ CREATE TABLE IF NOT EXISTS Payments1
   Tourist_ID INT NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Payment_ID, Booking_ID, Tourist_ID, Package_ID),
-  FOREIGN KEY (Booking_ID, Tourist_ID, Package_ID) REFERENCES Bookings1(Booking_ID, Tourist_ID, Package_ID)
+  FOREIGN KEY (Booking_ID, Tourist_ID, Package_ID) REFERENCES Bookings1(Booking_ID, Tourist_ID, Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Bookings_Tourists_IDs;
@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS Bookings_Tourists_IDs
   Tourist_ID INT NOT NULL,
   Package_ID INT NOT NULL,
   PRIMARY KEY (Tourists_IDs),
-  FOREIGN KEY (Booking_ID, Tourist_ID, Package_ID) REFERENCES Bookings1(Booking_ID, Tourist_ID, Package_ID)
+  FOREIGN KEY (Booking_ID, Tourist_ID, Package_ID) REFERENCES Bookings1(Booking_ID, Tourist_ID, Package_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Booking_Handler;
@@ -305,8 +305,8 @@ CREATE TABLE IF NOT EXISTS Booking_Handler
   Package_ID INT NOT NULL,
   Agent_ID INT NOT NULL,
   PRIMARY KEY (Payment_ID, Booking_ID, Tourist_ID, Package_ID, Agent_ID),
-  FOREIGN KEY (Payment_ID, Booking_ID, Tourist_ID, Package_ID) REFERENCES Payments1(Payment_ID, Booking_ID, Tourist_ID, Package_ID),
-  FOREIGN KEY (Agent_ID) REFERENCES Travel_Agents(Agent_ID)
+  FOREIGN KEY (Payment_ID, Booking_ID, Tourist_ID, Package_ID) REFERENCES Payments1(Payment_ID, Booking_ID, Tourist_ID, Package_ID) ON DELETE CASCADE,
+  FOREIGN KEY (Agent_ID) REFERENCES Travel_Agents(Agent_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Customized_Bookings2;
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS Customized_Bookings2
   Amount_Due INT NOT NULL,
   Tourist_ID INT NOT NULL,
   PRIMARY KEY (Custom_Booking_ID),
-  FOREIGN KEY (Tourist_ID) REFERENCES Tourists(Tourist_ID)
+  FOREIGN KEY (Tourist_ID) REFERENCES Tourists(Tourist_ID) ON DELETE CASCADE
 );
 
 
@@ -422,11 +422,11 @@ VALUES
 -- Insert data into Places table
 INSERT INTO Places (Places, Package_ID)
 VALUES
-  (1, 1),
-  (2, 2),
-  (3, 3),
-  (4, 4),
-  (5, 5);
+  ('Tokyo Skytree ', 2),
+  ('Tokyo Disneyland', 2),
+  ('paris skytree', 1),
+  ('paris mountain', 1),
+  ('tourist palace', 3);
 
 -- Insert data into Tourists table
 INSERT INTO Tourists (First_Name, Second_Name, Identity_Type, Identity_Number, House_Number, Postal_Code, Street_Address, Contact_Number, Agent_ID)
