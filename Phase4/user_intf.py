@@ -22,10 +22,24 @@ def option5():
 
 
 def option6():
-    query=""
+    given_month = input("enter the month : ")
+    given_year = input("enter the year : ")
+
+    query="select sum(Amount_due) from Bookings2 where Year= given_year and Month= given_month"
+
+
+
 def option7():
 
-def option8():
+
+def option8():   
+
+
+def option9():
+    query="select Rating,Comments, Day, Month,Year, Package_ID from(Reviews_and_Feedback2 as A join Reviews_and_Feedback1 as B on A.Review_ID=B.Review_ID ) "
+def option10():
+    query="select First_Name,Second_Name,count(*) as total_customers_assisted from(Travel_Agents as A left join Tourists as B on A.Agent_ID=B.Agent_ID ) group by A.Agent_ID"
+
 
 
 
