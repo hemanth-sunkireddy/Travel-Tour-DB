@@ -97,7 +97,7 @@ def option12():
     hrating=int(input("Enter the rating of hotel: "))
     day_price=int(input("Enter one day price: "))
     night_price=int(input("Enter one night price: "))
-    query=f"insert Customizable_Hotel(Hotel_Name,Hotel_Rating,Hotel_Rating,Night_Price) values({hname},{hrating},{day_price},{night_price})"
+    query=f"insert into Customizable_Hotel(Hotel_Name,Hotel_Rating,Day_Price,Night_Price) values({hname},{hrating},{day_price},{night_price})"
     execute_query(query)
     return
     
