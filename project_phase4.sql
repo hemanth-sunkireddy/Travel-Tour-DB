@@ -30,7 +30,9 @@ CREATE TABLE 'Tourists' (
     ContactNumber VARCHAR(255),
     HouseNumber VARCHAR(255),
     PostalCode VARCHAR(255),
-    StreetAddress VARCHAR(255)
+    StreetAddress VARCHAR(255),
+    AgentID INT,
+    FOREIGN KEY AgentID REFERENCES TravelAgents(AgentID)
 );
 
 DROP TABLE IF EXISTS `TourGuide`;
@@ -50,14 +52,17 @@ CREATE TABLE TourGuide (
 
 DROP TABLE IF EXISTS `Places`;
 CREATE TABLE Places (
-Places VARCHAR(255),
-FOREIGN KEY (Package_ID) REFERENCES TourPackages(PackageID)
+    Places VARCHAR(255),
+    PackageID INT,
+    FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID)
 );
 
 DROP TABLE IF EXISTS `Assigned_to`;
 CREATE TABLE Assigned_to (
-FOREIGN KEY (Guide_ID) REFERENCES TourGuide(GuideID),
-FOREIGN KEY (Package_ID) REFERENCES TourPackages(PackageID)
+    GuideID INT,
+    PackageID INT,
+    FOREIGN KEY (GuideID) REFERENCES TourGuide(GuideID),
+    FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID)
 );
 
 DROP TABLE IF EXISTS `TravelAgents`;
@@ -76,18 +81,20 @@ DROP TABLE IF EXISTS `TourPackages`;
 CREATE TABLE TourPackages (
     PackageID INT PRIMARY KEY,
     Destination VARCHAR(255),
-    Places VARCHAR(255),
     Days INT,
     Nights INT,
     Price FLOAT
 );
 
-DROP TABLE IF EXISTS `Book_Tourist_ID`;
-CREATE TABLE Book_Tourist_ID(
-   Tourists_ID INT,
-   Booking_ID INT,
-   Tourist_ID INT,
-   Package_ID INT
+DROP TABLE IF EXISTS `Bookings_TouristID`;
+CREATE TABLE Bookings_TouristID(
+   TouristsID INT,
+   BookingID INT,
+   TouristID INT,
+   PackageID INT,
+   FOREIGN KEY (BookingID) REFERENCES Bookings1(BookingID),
+   FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+   FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID)
 );
 
 DROP TABLE IF EXISTS `CustomizablePlaces`;
@@ -116,31 +123,31 @@ CREATE TABLE CustomizableHotel (
     HotelID INT PRIMARY KEY,
     HotelName VARCHAR(255),
     HotelRating FLOAT,
-    DayPrice FLOAT,
-    NightPrice FLOAT
+    Day FLOAT,
+    Night FLOAT
 );
 
-DROP TABLE IF EXISTS `ReviewsAndFeedback`;
+DROP TABLE IF EXISTS `ReviewsAndFeedback2`;
 -- Reviews and Feedback Table
-CREATE TABLE ReviewsAndFeedback (
+CREATE TABLE ReviewsAndFeedback2 (
     ReviewID INT PRIMARY KEY,
     Rating FLOAT,
     Comments VARCHAR(255),
-    Day INT,
-    Month INT,
-    Year INT
+    BookingDate DATE,
 );
 
-DROP TABLE IF EXISTS `ReviewsAndFeedback`;
-CREATE TABLE ReviewsAndFeedback(
+DROP TABLE IF EXISTS `ReviewsAndFeedback1`;
+CREATE TABLE ReviewsAndFeedback1(
     ReviewID INT PRIMARY KEY,
     TouristID INT,
     PackageID INT,
+    FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+    FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID),
 );
 
-DROP TABLE IF EXISTS `Offers`;
+DROP TABLE IF EXISTS `Offers2`;
 -- Offers Table
-CREATE TABLE Offers (
+CREATE TABLE Offers2 (
     OfferID INT PRIMARY KEY,
     OfferName VARCHAR(255),
     Description VARCHAR(255),
@@ -148,15 +155,16 @@ CREATE TABLE Offers (
     Status VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS `Offers2`;
-CREATE TABLE Offers2 (
+DROP TABLE IF EXISTS `Offers1`;
+CREATE TABLE Offers1 (
     OfferID INT PRIMARY KEY,
     PackageID INT,
+    FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID)
 );
 
-DROP TABLE IF EXISTS `Bookings`;
+DROP TABLE IF EXISTS `Bookings2`;
 -- Bookings Table
-CREATE TABLE Bookings (
+CREATE TABLE Bookings2 (
     BookingID INT PRIMARY KEY,
     BookingDate DATE,
     TotalAmount FLOAT,
@@ -164,60 +172,81 @@ CREATE TABLE Bookings (
     AmountDue FLOAT
 );
 
-DROP TABLE IF EXISTS `Booking1`;
-CREATE TABLE Booking1 (
-   Booking_ID INT,
-   Tourist_ID INT,
-   Package_ID INT
+DROP TABLE IF EXISTS `Bookings1`;
+CREATE TABLE Bookings1 (
+   BookingID INT,
+   TouristID INT,
+   PackageID INT,
+   FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+   FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID    )
 )
 
-DROP TABLE IF EXISTS `CustomizableTransportBooking`;
+DROP TABLE IF EXISTS `CustomizableTransportBooking1`;
 -- Customizable Transport Booking Table
-CREATE TABLE CustomizableTransportBooking (
+CREATE TABLE CustomizableTransportBooking1 (
     TransportBookingID INT PRIMARY KEY,
     TransportID INT,
-    DepartureDateTime DATETIME,
     FOREIGN KEY (TransportID) REFERENCES CustomizableTransport(TransportID)
 );
 
-DROP TABLE IF EXISTS `CustomizableHotelBooking`;
+DROP TABLE IF EXISTS `CustomizableTransportBooking2`;
+-- Customizable Transport Booking Table
+CREATE TABLE CustomizableTransportBooking2 (
+    TransportBookingID INT PRIMARY KEY,
+    DepartureDateTime DATETIME,
+);
+
+DROP TABLE IF EXISTS `CustomizableHotelBooking2`;
 -- Customizable Hotel Booking Table
-CREATE TABLE CustomizableHotelBooking (
+CREATE TABLE CustomizableHotelBooking2 (
     HotelBookingID INT PRIMARY KEY,
-    HotelID INT,
     BookingDate DATE,
     DurationDay INT,
     DurationNight INT,
-    Cost FLOAT,
+);
+
+DROP TABLE IF EXISTS `CustomizableHotelBooking1`;
+-- Customizable Hotel Booking Table
+CREATE TABLE CustomizableHotelBooking1 (
+    HotelBookingID INT PRIMARY KEY,
+    HotelID INT,
     FOREIGN KEY (HotelID) REFERENCES CustomizableHotel(HotelID)
 );
 
-DROP TABLE IF EXISTS `CustomizedBookings`;
+DROP TABLE IF EXISTS `CustomizedBookings2`;
 -- Customized Bookings Table
-CREATE TABLE CustomizedBookings (
+CREATE TABLE CustomizedBookings2 (
     CustomBookingID INT PRIMARY KEY,
     TouristID INT,
     BookingDate DATE,
-    PlaceID INT,
-    TransportBookingID INT,
-    HotelBookingID INT,
     Gender VARCHAR(255),
     Language VARCHAR(255),
-    TouristsIDs VARCHAR(255),
-    TotalAmount FLOAT,
     AmountPaid FLOAT,
     AmountDue FLOAT,
-    FOREIGN KEY (PlaceID) REFERENCES CustomizablePlaces(PlaceID),
-    FOREIGN KEY (TransportBookingID) REFERENCES CustomizableTransportBooking(TransportBookingID),
-    FOREIGN KEY (HotelBookingID) REFERENCES CustomizableHotelBooking(HotelBookingID)
+    FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID)
 );
 
-DROP TABLE IF EXISTS `Payments1`;
+DROP TABLE IF EXISTS `CustomizedBookings1`;
+-- Customized Bookings Table
+CREATE TABLE CustomizedBookings1 (
+    CustomBookingID INT PRIMARY KEY,
+    PlaceID INT,
+    TransportBookingID INT,
+    TransportID INT,
+    HotelBookingID INT,
+    HotelID INT,
+    FOREIGN KEY (PlaceID) REFERENCES CustomizablePlaces(PlaceID),
+    FOREIGN KEY (TransportBookingID) REFERENCES CustomizableTransportBooking(TransportBookingID),
+    FOREIGN KEY (TransportID) REFERENCES CustomizableTransport(TransportID),
+    FOREIGN KEY (HotelBookingID) REFERENCES CustomizableHotelBooking(HotelBookingID),
+    FOREIGN KEY (HotelID) REFERENCES CustomizableHotel(HotelID)
+);
+
+DROP TABLE IF EXISTS `Payments2`;
 -- Payments Table
-CREATE TABLE Payments1 (
+CREATE TABLE Payments2 (
     PaymentID INT PRIMARY KEY,
     BookingType VARCHAR(255),
-    BookingID INT,
     PaymentDate DATE,
     PaymentAmount FLOAT,
     PaymentMethod VARCHAR(255)
@@ -228,11 +257,46 @@ CREATE TABLE Payments1 (
     PaymentID INT PRIMARY KEY,
     BookingID INT,
     TouristID INT,
-    PackageID INT
+    PackageID INT,
+    FOREIGN KEY (BookingID) REFERENCES Bookings1(BookingID),
+    FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+    FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID)
 );
 
-DROP TABLE IF EXISTS `Languages`;
-CREATE TABLE Languages(
+DROP TABLE IF EXISTS `LanguagesSpoken`;
+CREATE TABLE LanguagesSpoken(
     LanguagesSpoken VARCHAR(255),
-    FOREIGN KEY (Guide_ID) REFERENCES TourGuide(Guide_ID)
+    GuideID INT,
+    FOREIGN KEY (GuideID) REFERENCES TourGuide(GuideID)
+);
+
+DROP TABLE IF EXISTS `BookingHandler`;
+CREATE TABLE BookingHandler (
+    PaymentID INT,
+    BookingID INT,
+    TouristID INT,
+    PackageID INT,
+    AgentID INT,
+    FOREIGN KEY (PaymentID) REFERENCES Payments1(PaymentID),
+    FOREIGN KEY (BookingID) REFERENCES Bookings1(BookingID),
+    FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+    FOREIGN KEY (PackageID) REFERENCES TourPackages(PackageID),
+    FOREIGN KEY (AgentID) REFERENCES TravelAgents(AgentID)
+);
+
+DROP TABLE IF EXISTS `TouristsIDs`;
+CREATE TABLE TouristsIDs (
+    TouristsIDs INT PRIMARY KEY,
+    PlaceID INT,
+    TransportBookingID INT,
+    TransportID INT,
+    HotelBookingID INT,
+    HotelID INT,
+    CustomBookingID INT,
+    FOREIGN KEY (PlaceID) REFERENCES CustomizablePlaces(PlaceID),
+    FOREIGN KEY (TransportBookingID) REFERENCES CustomizableTransportBooking(TransportBookingID),
+    FOREIGN KEY (TransportID) REFERENCES CustomizableTransport(TransportID),
+    FOREIGN KEY (HotelBookingID) REFERENCES CustomizableHotelBooking(HotelBookingID),
+    FOREIGN KEY (HotelID) REFERENCES CustomizableHotel(HotelID),
+    FOREIGN KEY (CustomBookingID) REFERENCES CustomizedBookings1(CustomBookingID)
 );
