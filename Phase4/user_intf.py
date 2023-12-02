@@ -30,10 +30,10 @@ def option6():
 
 
 def option7():
-
+    print("Option 7")
 
 def option8():   
-
+    print("Optino 8")
 
 def option9():
     query="select Rating,Comments, Day, Month,Year, Package_ID from(Reviews_and_Feedback2 as A join Reviews_and_Feedback1 as B on A.Review_ID=B.Review_ID ) "
@@ -87,7 +87,8 @@ def option1():
         query= "select * from Tour_Packages where  Destination == '%s'" % (dest) 
         ## or "select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination == '%s' " % (dest) 
         
-
+    except: 
+        print("Nothing if try fails it comes to except")
 
     return
 
@@ -136,9 +137,7 @@ def dispatch(ch):
 while(1):
     tmp = sp.call('clear', shell=True)
     
-    # # Can be skipped if you want to hardcode username and password
-    # username = input("Username: ")
-    # password = input("Password: ")
+    
 
     try:
         # Set db name accordingly which have been create by you
@@ -147,7 +146,7 @@ while(1):
                               port=3306,
                               user="gopi",
                               password="abcde54321#",
-                              db='phase4',
+                              db='TRAVEL_AGENCY',
                               cursorclass=pymysql.cursors.DictCursor)
         tmp = sp.call('clear', shell=True)
 
