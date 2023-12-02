@@ -2,45 +2,62 @@ import subprocess as sp
 import pymysql
 import pymysql.cursors
 
+def execute_query(query):
+    try:
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        con.rollback()
+        print(">>>>>>>>>>>>>", e)
+    return
 
 def option2():
-    
     lang = input("enter the language of tour guide: ")
     query= "select * from Tour_Guide where Tour_Guide.Guide_ID in(select Guide_ID from Languages_Spoken as A where A.Languages_Spoken= '%s')" % (lang) 
-
+    execute_query(query)
+    return
 
 def option3():
     query="select Destination_name as destination,Place_Name as place from Customizable_Places"
-
+    execute_query(query)
+    return
 
 def option4():
     query="select Hotel_Name,Hotel_Rating from Customizable_Hotel"
+    execute_query(query)
+    return
 
 def option5():
     dest = input("enter the destination for package: ")
     query="SELECT * FROM  Tour_Packages WHERE Destination = %s ORDER BY Price ASC LIMIT 1" % (dest)
-
+    execute_query(query)
+    return
 
 def option6():
     given_month = input("enter the month : ")
     given_year = input("enter the year : ")
 
     query="select sum(Amount_due) from Bookings2 where Year= given_year and Month= given_month"
-
-
+    execute_query(query)
+    return
 
 def option7():
     print("Option 7")
+    return
 
 def option8():   
     print("Option 8")
+    return
+
 def option9():
     query="select Rating,Comments, Day, Month,Year, Package_ID from(Reviews_and_Feedback2 as A join Reviews_and_Feedback1 as B on A.Review_ID=B.Review_ID ) "
+    execute_query(query)
+    return
+
 def option10():
     query="select First_Name,Second_Name,count(*) as total_customers_assisted from(Travel_Agents as A left join Tourists as B on A.Agent_ID=B.Agent_ID ) group by A.Agent_ID"
-
-
-
+    execute_query(query)
+    return
 
 def option1():
     """
@@ -52,42 +69,11 @@ def option1():
     If you choose to take Super_SSN, you need to make sure the foreign key constraint is satisfied
     HINT: Instead of handling all these errors yourself, you can make use of except clause to print the error returned to you by MySQL
     """
-    try:
-        # Takes emplyee details as input
-        row = {}
-        print("Enter new employee's details: ")
-        name = (input("Name (Fname Minit Lname): ")).split(' ')
-        row["Fname"] = name[0]
-        row["Minit"] = name[1]
-        row["Lname"] = name[2]
-        row["Ssn"] = input("SSN: ")
-        row["Bdate"] = input("Birth Date (YYYY-MM-DD): ")
-        row["Address"] = input("Address: ")
-        row["Sex"] = input("Sex: ")
-        row["Salary"] = float(input("Salary: "))
-        row["Dno"] = int(input("Dno: "))
 
-        query = "INSERT INTO EMPLOYEE(Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary, Dno) VALUES('%s', '%c', '%s', '%s', '%s', '%s', '%c', %f, %d)" % (
-            row["Fname"], row["Minit"], row["Lname"], row["Ssn"], row["Bdate"], row["Address"], row["Sex"], row["Salary"], row["Dno"])
-
-        print(query)
-        cur.execute(query)
-        con.commit()
-
-        print("Inserted Into Database")
-
-    except Exception as e:
-        con.rollback()
-        print("Failed to insert into database")
-        print(">>>>>>>>>>>>>", e)
-
-    try:
-        dest = input("enter the destination for package: ")
-        query= "select * from Tour_Packages where  Destination == '%s'" % (dest) 
-        ## or "select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination == '%s' " % (dest) 
-        
-    except: 
-        print("Nothing")
+    dest = input("enter the destination for package: ")
+    query= "select * from Tour_Packages where  Destination == '%s'" % (dest) 
+    #     ## or "select * from (Tour_Packages join Places on Tour_Packages.Package_ID = Places.Package_ID) where  Destination == '%s' " % (dest) 
+    execute_query(query)
 
     return
 
@@ -102,37 +88,50 @@ def option11():
     serving_destination=input("Enyrt serving destination: ")
     availability=int(input("Is the guide avaialbale (0/1): "))
     query=f"insert into Tour_Guide(First_Name,Second_Name,Identity_Type,Identity_Number,Gender,Contact_Number,Serving_Destination,Availability_Status) values({fname},{sname},{identity_type},{identity_number},{gender},{contact_number},{serving_destination},{availability})"
+    execute_query(query)
+    return
 
 # Add a new customizable hotel
 def option12():
     hname=input("Enter hotel name: ")
+    hrating=int(input("Enter the rating of hotel: "))
     day_price=int(input("Enter one day price: "))
     night_price=int(input("Enter one night price: "))
-    query=f"insert Customizable_Hotel(Hotel_Name,Hotel_Rating,Night_Price) values({hname},{day_price},{night_price})"
-
+    query=f"insert Customizable_Hotel(Hotel_Name,Hotel_Rating,Hotel_Rating,Night_Price) values({hname},{hrating},{day_price},{night_price})"
+    execute_query(query)
+    return
+    
 # Update rating of a tour guide
 def option13():
     guide_id=int(input("Enter guide id: "))
     rating=int(input("Enter rating for the guide: "))
     query=f"update Tour_Guide set Rating={rating} where Guide_ID={guide_id}"
-
+    execute_query(query)
+    return
+    
 # Update price of customizable hotel
 def option14():
     hotel_id=int(input("Enter hotel id: "))
     day_price=int(input("Enter updated day price: "))
     night_price=int(input("Enter updated night price: "))
     query=f"update Customizable_Hotel set Day_Price={day_price}, Night_Price={night_price} where Hotel_ID={hotel_id}"
-
+    execute_query(query)
+    return
+    
 # Remove an agent from Travel_Agents table
 def option15():
     agent_id=int(input("Enter travel agent id: "))
     query=f"delete from Travel_Agents where Agent_ID={agent_id}"
-
+    execute_query(query)
+    return
+    
 # Remove a hotel from Customizable_Hotel table
 def option16():
     hotel_id=int(input("Enter hotel id: "))
     query=f"delete from Customizable_Hotel where Hotel_ID={hotel_id}"
-
+    execute_query(query)
+    return
+    
 def dispatch(ch):
     """
     Function that maps helper functions to option entered
@@ -205,8 +204,8 @@ while(1):
                 tmp = sp.call('clear', shell=True)
                 # selection
         
-                print("1. available packages for a destination")  
-                print("2. tour guide speaking a language")  
+                print("1. Available packages for a destination")  
+                print("2. View tour guides based on the language selection")  
 
                 # projection
 
@@ -215,32 +214,32 @@ while(1):
 
                 #aggregate
 
-                print("5. minimum priced package for a destination") 
-                print("6. total payment due for a month of year") 
+                print("5. Minimum priced package for a destination") 
+                print("6. Total payment due for a month of year") 
 
                 # search
-
-
+                print("7. View all the tour guides having their ids starting with some number")
+                print("8. View all the tourists having their ids starting with some number")
 
                 #analysis
 
-                print("9. reviews and feedback on packages") 
-                print("10. total customers assisted by travel agents") 
+                print("9. Reviews and feedback on packages") 
+                print("10. Total customers assisted by travel agents") 
 
                 # insert
 
-                print("11. add a new tour guide") 
-                print("12. add a new hotel")
+                print("11. Add a new tour guide") 
+                print("12. Add a new hotel")
 
                 # update
 
-                print("13. update rating of tour guide") 
-                print("14. update day and night price of hotel") 
+                print("13. Update rating of tour guide") 
+                print("14. Update day and night price of hotel") 
 
                 # delete
 
-                print("15. remove a travel agent") 
-                print("16. remove a hotel")  
+                print("15. Remove a travel agent") 
+                print("16. Remove a hotel")  
 
 
                 ch = int(input("Enter choice> "))
